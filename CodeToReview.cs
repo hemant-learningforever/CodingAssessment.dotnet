@@ -44,14 +44,15 @@ namespace Utility.Valocity.ProfileHelper
                     // Creates a dandon Name // spell mistake in comment it should be random
                     string name = string.Empty;
                     var random = new Random();// Don't need to create Random  instance everytime. Instead it can be a class level
-                    if (random.Next(0, 1) == 0) {
+                    if (random.Next(0, 1) == 0)//This random.Next will always return 0 as upper bound is exclusive in next method. so we need to change upper bound to 2 here. despite that logic for names sounds ineffcient as only 2 names are generated every time bob or Betty . This needs to be change to have random string
+                    { 
                         name = "Bob";
                     }
                     else {
                         name = "Betty";
                     }
                     // Adds new people to the list
-                    _people.Add(new People(name, DateTime.UtcNow.Subtract(new TimeSpan(random.Next(18, 85) * 356, 0, 0, 0))));
+                    _people.Add(new People(name, DateTime.UtcNow.Subtract(new TimeSpan(random.Next(18, 85) * 356, 0, 0, 0))));// I think we should use 365 instead of 356 here as thats the number of days in year ( I am exlcluding leap year for simplcitiy)   
                 }
                 catch (Exception e)
                 {
@@ -66,7 +67,7 @@ namespace Utility.Valocity.ProfileHelper
         
         private IEnumerable<People> GetBobs(bool olderThan30) // this method is private and not used anywhere in class so we can delete this.
         {
-            // for comparing Name use equals with StringComparison.OrdinalIgnoreCase to make it work for all cases 
+            // for comparing Name use equals with StringComparison.OrdinalIgnoreCase to make it work for all cases  also use 365 as noofdays instead of 356
             return olderThan30 ? _people.Where(x => x.Name == "Bob" && x.DOB >= DateTime.Now.Subtract(new TimeSpan(30 * 356, 0, 0, 0))) : _people.Where(x => x.Name == "Bob");
         }
 
