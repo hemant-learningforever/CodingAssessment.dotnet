@@ -35,7 +35,7 @@ namespace Utility.Valocity.ProfileHelper
         /// </summary>
         /// <param name="j"></param>
         /// <returns>List<object></returns>
-        public List<People> GetPeople(int i)
+        public List<People> GetPeople(int i)// use proper variable name maybe maxPersons
         {
             for (int j = 0; j < i; j++)
             {
@@ -67,7 +67,8 @@ namespace Utility.Valocity.ProfileHelper
         
         private IEnumerable<People> GetBobs(bool olderThan30) // this method is private and not used anywhere in class so we can delete this.
         {
-            // for comparing Name use equals with StringComparison.OrdinalIgnoreCase to make it work for all cases  also use 365 as noofdays instead of 356
+            // for comparing Name use equals with StringComparison.OrdinalIgnoreCase to make it work for all cases  also use 365 as noofdays instead of 356.
+            // logic for getting olderthan30 bobs is incorrect use sumbol < insteadof >=. Also we should use DateTimeOffset.UtcNow.AddYears(-30) instead of creating timespan
             return olderThan30 ? _people.Where(x => x.Name == "Bob" && x.DOB >= DateTime.Now.Subtract(new TimeSpan(30 * 356, 0, 0, 0))) : _people.Where(x => x.Name == "Bob");
         }
 
@@ -76,7 +77,7 @@ namespace Utility.Valocity.ProfileHelper
             // check for null values of p and lastname and throw ArgumentNullException if any of them is null code will break.
             if (lastName.Contains("test"))// Lets use StringComparison.OrdinalIgnoreCase to make contains work for all cases 
                 return p.Name;
-            if ((p.Name.Length + lastName).Length > 255) // This should be ((p.Name + lastName).Length > 255). Also use constant for 255
+            if ((p.Name.Length + lastName).Length > 255) // This should be ((p.Name + lastName).Length > 255). Also use constant for 255 (DRY)
             {
                 (p.Name + " " + lastName).Substring(0, 255);// Return is missing here. Use constants for space  
             }
